@@ -51,3 +51,43 @@ for single_row in csv.DictReader(f):
 plt.plot(x_axis,y_axis)
 plt.gcf().autofmt_xdate() #plt.gcf是專門畫圖的東西，可以比較漂亮
 plt.show()
+
+#test1
+import matplotlib.pyplot as plt #plt是大家習慣用語，plotlib都是英文版的
+#plt.plot([1,2,3],[4,5,6]) #前面是x座標  後面是y座標
+#plt.show()
+import csv
+from datetime import datetime #strftime=將時間字串變成時間資料
+
+f = open( "./result/日圓(JPY).csv", "r") #r=only read
+#print(csv.DictReader(f))
+x_axis=[] #用 list 表示
+y_axis=[]
+for single_row in csv.DictReader(f):
+    timeOBJ = datetime.strptime(single_row["時間"],"%Y-%m-%d %H:%M:%S")
+    x_axis.append(timeOBJ)
+    y_axis.append(single_row["匯率"])
+plt.plot(x_axis,y_axis)
+plt.gcf().autofmt_xdate() #plt.gcf是專門畫圖的東西，可以比較漂亮
+plt.show()
+
+
+#test2
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import csv
+from time import localtime, strftime #strftime=string format time  將時間轉為字串
+from os.path import exists
+
+response=urlopen("http://rate.bot.com.tw/xrt?Lang=zh-TW")
+html=BeautifulSoup(response,"html.parser") #後面的""裡的東西會因為電腦而有差異
+html.find("table")
+
+for single_tr in html.find("table").find("tbody").findAll("tr"):
+    rate =single_tr.findAll("td")[2].contents[0] #這樣就可以直接拿出td 的列，但還位萃取出內容
+    currency=single_tr.findAll("td")[0].find("div",{"class":"visible-phone"}).contents[0] #將幣別和數字拿出來了，後面再找出div，再找出class 屬性，contents[0]→拿出內容，第0是全部的內容
+    currency = currency.replace(" ", "")  # 去掉空白#replace是產生新資料的一種函式
+    currency = currency.replace("\r", "")
+    currency = currency.replace("\n", "")  # 清換行
+    print(currency,rate)
+
