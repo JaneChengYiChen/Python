@@ -12,12 +12,12 @@ driver.get("https://www.facebook.com/")
 #enter email
 email = driver.find_element_by_name("email")
 email.clear()
-email.send_keys("0965177020")
+email.send_keys("0965...")
 
 #enter password
 password = driver.find_element_by_name("pass")
 password.clear()
-password.send_keys("fazer@1995")
+password.send_keys("fa...")
 
 #press button
 
